@@ -3,8 +3,25 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as cartActions from "../../redux/actions/cartActions";
 import { Table, Button } from "reactstrap";
-
+import { ToastContainer, toast } from 'react-toastify';
 class CartDetail extends Component {
+   
+    notify = (note) => toast.error(note, {
+        theme: "dark",
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+
+    removeFromCart(product){
+        this.props.actions.removeFromCart(product)
+        this.notify('Removed from Cart!')
+    }
+
   render() {
     return (
       <div>
@@ -37,6 +54,7 @@ class CartDetail extends Component {
             ))}
           </tbody>
         </Table>
+        <ToastContainer />
       </div>
     );
   }
