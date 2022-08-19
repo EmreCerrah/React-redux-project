@@ -1,11 +1,32 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Badge, Table } from "reactstrap";
+import { Badge, Table , Button} from "reactstrap";
 import { bindActionCreators } from "redux";
 import * as productActions from "../../redux/actions/productActions";
+import * as cartActions from "../../redux/actions/cartActions";
+import { ToastContainer, toast } from 'react-toastify';
+
 class ProductList extends Component {
   componentDidMount() {
     this.props.actions.getProducts();
+  }
+
+  notify = () => toast.success('Added to cart!', {
+    theme: "dark",
+    position: "bottom-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    });
+
+
+
+  addToCart= (product)=>{
+    this.props.actions.addToCart({quantity:1, product})
+    this.notify()
   }
 
   render() {
@@ -26,6 +47,7 @@ class ProductList extends Component {
               <th>Unit Price</th>
               <th>Quantity Pre Unit</th>
               <th>Unit In Stock</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -36,10 +58,12 @@ class ProductList extends Component {
                 <td>{product.unitPrice}</td>
                 <td>{product.quantityPerUnit}</td>
                 <td>{product.unitsInStock}</td>
+                <td><Button color="success" onClick={()=>this.addToCart(product)}>Add</Button></td>
               </tr>
             ))}
           </tbody>
         </Table>
+        <ToastContainer />
       </div>
     );
   }
@@ -56,6 +80,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       getProducts: bindActionCreators(productActions.getProducts, dispatch),
+      addToCart: bindActionCreators(cartActions.addToCart, dispatch),
     },
   };
 }

@@ -12,16 +12,20 @@ class CategoryList extends Component {
 
   selectedCategory = (category) => {
     this.props.actions.changeCategory(category);
-    this.props.actions.getProducts(category.id)
+    this.props.actions.getProducts(category.id);
   };
 
   render() {
     return (
-      <div><h4>
-        <Badge color="warning" onClick={()=>this.props.actions.getProducts()}  >
+      <div>
+        <h4>
+          <Badge
+            color="warning"
+            onClick={() => this.props.actions.getProducts()}
+          >
             Categories
           </Badge>
-          </h4>
+        </h4>
         <ListGroup>
           {this.props.categories.map((category) => (
             <ListGroupItem
